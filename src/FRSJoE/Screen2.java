@@ -1,0 +1,316 @@
+/*
+ * Copyright 2015 Jewel of the East
+ */
+package FRSJoE;
+
+
+import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableModel;
+
+/**
+ *
+ * @author Deepak Kumar
+ */
+public class Screen2 extends javax.swing.JFrame {
+
+    /**
+     * Creates new form Screen2
+     */
+   
+    private DisplayMgr MgrTemp=null;
+    private String selectedobject;
+    private Flight FlightTemp; 
+    private int rowindex,columnindex;
+    private String[][] Result;
+    private boolean check=false;
+    String [][] objects = new String[100][9];
+    String [][] data = new String[2][9];
+    int length,index;
+    
+    public Screen2(String[][] ResultFlight) {
+        length = 0;
+        Result = ResultFlight;
+        
+        initComponents();
+        
+    }
+    public void invokeScreen2(DisplayMgr MgrObj){
+        MgrTemp = MgrObj;
+        String str;  
+        //System.out.println(Result.length);
+        if(MgrObj.row_len<1){
+            JOptionPane.showMessageDialog(rootPane, "SORRY, CURRENTLY NO FLIGHTS AVAILABLE,CHOOSE ANOTHER DATE!");
+            
+            MgrTemp.showscreen1();
+        }
+        else{
+        for(int i=0;i<MgrObj.row_len;i++){
+           
+                    DefaultTableModel t = (DefaultTableModel)Table1.getModel();
+                    int domdep,intlarr,durtotal = 0;
+                    intlarr=Integer.parseInt(Result[i][7]);
+                    domdep=Integer.parseInt(Result[i][1]);
+                    durtotal = calDur(domdep, intlarr);
+
+                if (Integer.parseInt(Result[i][5]) >= 2400) {
+                    int temp = Integer.parseInt(Result[i][5]);
+                    temp = temp - 2400;
+                    Result[i][5] = "00" + String.valueOf(temp) + "(+1)";
+                }
+
+                durtotal = durEdit(durtotal);
+
+                String durTime = String.valueOf(durtotal);
+                if (durTime.length() == 3) {
+                    durTime = "0" + durTime;
+                }
+
+                if (Result[i][1].length() == 3) {
+                    Result[i][1] = "0" + Result[i][1];
+                }
+
+                if (Result[i][3].length() == 3) {
+                    Result[i][3] = "0" + Result[i][3];
+                }
+
+                if (Result[i][7].length() == 3) {
+                    Result[i][7] = "0" + Result[i][7] + "(+1)";
+                } else if (Integer.parseInt(Result[i][7]) >= 3000) {
+                    Result[i][7] = "0" + (Integer.parseInt(Result[i][7]) - 2400) + ("(+1)");
+                }
+
+                Result[i][1] = Result[i][1].substring(0, 2) + ":" + Result[i][1].substring(2, 4);
+                Result[i][3] = Result[i][3].substring(0, 2) + ":" + Result[i][3].substring(2, 4);
+                Result[i][5] = Result[i][5].substring(0, 2) + ":" + Result[i][5].substring(2);
+                Result[i][7] = Result[i][7].substring(0, 2) + ":" + Result[i][7].substring(2);
+                durTime = durTime.substring(0, 2) + " hrs " + durTime.substring(2) + " mins";
+                
+                    t.addRow(new Object[]{Result[i][0],Result[i][1],Result[i][2],Result[i][3],
+                    Result[i][4],Result[i][5],Result[i][6],Result[i][7],durTime});
+                    objects[length][0] = Result[i][0];
+                    objects[length][1] = Result[i][1];
+                    objects[length][2] = Result[i][2];
+                    objects[length][3] = Result[i][3];
+                    objects[length][4] = Result[i][4];
+                    objects[length][5] = Result[i][5];
+                    objects[length][6] = Result[i][6];
+                    objects[length][7] = Result[i][7];
+                    objects[length][8] = durTime;
+                    length++;
+        }
+        this.setVisible(true);
+        }
+    }
+    
+        private static int durEdit(int durtotal) {
+        int hours, minutes;
+        hours = durtotal / 100;
+        minutes = durtotal % 100;
+        if (minutes >= 30) {
+            minutes -= 30;
+            hours -= 2;
+        } else {
+            minutes += 30;
+            hours -= 3;
+        }
+        durtotal = hours * 100 + minutes;
+        return durtotal;
+
+    }
+
+    private static int calDur(int domdep, int intlarr) {
+        int m, n, durtotal = 0;
+        if (intlarr < domdep) {
+            durtotal = 2400 - domdep + intlarr;
+
+        } else if (intlarr >= 2400) {
+            durtotal = 2400 - domdep + (intlarr - 2400);
+        } else {
+            durtotal = intlarr - domdep;
+        }
+        
+        m = durtotal / 100;
+        n = durtotal % 100;
+        n = n % 60;
+        durtotal = m * 100 + n;
+        return durtotal;
+    }
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        NextButton = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        Table1 = new javax.swing.JTable();
+        Back = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(1024, 600));
+        setResizable(false);
+        getContentPane().setLayout(null);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(1366, 600));
+        jPanel1.setLayout(null);
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("SEARCH RESULTS");
+        jPanel1.add(jLabel1);
+        jLabel1.setBounds(-190, 150, 1366, 68);
+
+        NextButton.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        NextButton.setText("OK");
+        NextButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NextButtonActionPerformed(evt);
+            }
+        });
+        jPanel1.add(NextButton);
+        NextButton.setBounds(830, 490, 102, 34);
+
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(700, 350));
+
+        Table1.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        Table1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        Table1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Origin", "Departure", "Flight Number(SpiceJet)", "Arrival to via", "Via", "Departure from via(hhmm)", "Flight Number(SilkAir)", "Arrival(hhmm)", "Duration"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        Table1.setFillsViewportHeight(true);
+        Table1.setGridColor(new java.awt.Color(0, 0, 0));
+        Table1.setIntercellSpacing(new java.awt.Dimension(2, 1));
+        Table1.setPreferredSize(new java.awt.Dimension(700, 350));
+        Table1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                Table1MouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(Table1);
+        if (Table1.getColumnModel().getColumnCount() > 0) {
+            Table1.getColumnModel().getColumn(0).setResizable(false);
+            Table1.getColumnModel().getColumn(1).setResizable(false);
+            Table1.getColumnModel().getColumn(2).setResizable(false);
+            Table1.getColumnModel().getColumn(3).setResizable(false);
+            Table1.getColumnModel().getColumn(4).setResizable(false);
+            Table1.getColumnModel().getColumn(5).setResizable(false);
+            Table1.getColumnModel().getColumn(6).setResizable(false);
+            Table1.getColumnModel().getColumn(7).setResizable(false);
+            Table1.getColumnModel().getColumn(8).setResizable(false);
+        }
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(10, 222, 980, 260);
+
+        Back.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        Back.setText("BACK");
+        Back.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BackActionPerformed(evt);
+            }
+        });
+        jPanel1.add(Back);
+        Back.setBounds(60, 490, 109, 34);
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/FRSJoE/background.jpg"))); // NOI18N
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(-10, 10, 1030, 540);
+
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(10, 0, 1270, 529);
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+ 
+        
+
+    private void NextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NextButtonActionPerformed
+        // TODO add your handling code here:
+      if(check==true){  
+        MgrTemp.showScreen3(this,FlightTemp,rowindex);
+        this.setVisible(false);}
+      else
+        JOptionPane.showMessageDialog(null, " No Flights selected! Please select a Flight to proceed! ");  
+    }//GEN-LAST:event_NextButtonActionPerformed
+
+    private void BackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BackActionPerformed
+        // TODO add your handling code here:
+        this.setVisible(false);
+        MgrTemp.showscreen1();
+        
+    }//GEN-LAST:event_BackActionPerformed
+
+    private void Table1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Table1MouseClicked
+        // TODO add your handling code here:
+        try{
+            rowindex=Table1.getSelectedRow();
+            columnindex=Table1.getSelectedColumn();
+            selectedobject=(String)Table1.getModel().getValueAt(rowindex, 8);
+            FlightTemp = new Flight((String)Table1.getModel().getValueAt(rowindex, 0),(String)Table1.getModel().getValueAt(rowindex, 1),
+                    (String)Table1.getModel().getValueAt(rowindex, 2),(String)Table1.getModel().getValueAt(rowindex, 3),
+                    (String)Table1.getModel().getValueAt(rowindex, 4),(String)Table1.getModel().getValueAt(rowindex, 5),
+                (String)Table1.getModel().getValueAt(rowindex, 6),(String)Table1.getModel().getValueAt(rowindex, 7),
+                    (String)Table1.getModel().getValueAt(rowindex, 8));
+
+            
+            check=true;
+            ListSelectionModel model = Table1.getSelectionModel();
+            model.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+            model.addListSelectionListener(new ListSelectionListener(){
+                public void valueChanged(ListSelectionEvent event){
+                    if(!event.getValueIsAdjusting())
+                        index = model.getLeadSelectionIndex();
+                }
+            });
+            for(int x = 0;x<9;x++){
+                data[0][x] = objects[index][x];
+            }
+        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null,"       Please Select a Row!");
+        }
+    }//GEN-LAST:event_Table1MouseClicked
+
+    /**
+     * @param args the command line arguments
+     */
+    
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Back;
+    private javax.swing.JButton NextButton;
+    private javax.swing.JTable Table1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    // End of variables declaration//GEN-END:variables
+}
